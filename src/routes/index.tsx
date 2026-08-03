@@ -223,12 +223,15 @@ function Beat({
   start: number;
   end: number;
 }) {
-  const opacity = useTransform(
-    progress,
-    [start - 0.08, start + 0.05, end - 0.05, end + 0.05],
-    [0.15, 1, 1, 0.15],
-  );
-  const yv = useTransform(progress, [start, end], [24, -24]);
+  const clamp = (n: number) => Math.min(1, Math.max(0, n));
+  const range = [
+    clamp(start - 0.08),
+    clamp(start + 0.05),
+    clamp(end - 0.05),
+    clamp(end + 0.05),
+  ];
+  const opacity = useTransform(progress, range, [0.15, 1, 1, 0.15]);
+  const yv = useTransform(progress, [clamp(start), clamp(end)], [24, -24]);
 
   return (
     <motion.div style={{ opacity, y: yv }} className="max-w-2xl">
