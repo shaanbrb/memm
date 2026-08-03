@@ -110,7 +110,8 @@ function Hero() {
           Productivity is temporary. Memes are forever.
         </motion.p>
 
-        <h1 className="mt-7 text-balance-tight text-[15vw] font-semibold leading-[0.86] md:text-[7.5rem]">
+        <h1 className="mt-7 text-balance-tight text-[13.5vw] font-semibold leading-[0.86] md:text-[7rem]">
+          <span className="block whitespace-nowrap">
           {"Manufacturing".split("").map((c, i) => (
             <motion.span
               key={i}
@@ -122,7 +123,7 @@ function Hero() {
               {c}
             </motion.span>
           ))}
-          <br />
+          </span>
           <motion.span
             initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
