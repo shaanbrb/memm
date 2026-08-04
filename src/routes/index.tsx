@@ -178,8 +178,8 @@ function Hero() {
           className="flex flex-col justify-center gap-4 px-6 py-10 md:px-10 lg:py-24"
         >
           <div className="flex items-baseline justify-between">
-            <Label>Plate 01</Label>
-            <Label>{feature.name}</Label>
+            <Label className="shrink-0">Plate 01</Label>
+            <Label className="truncate pl-4">{feature.name}</Label>
           </div>
           <div className="hairline overflow-hidden rounded-xl bg-surface-2 p-2">
             <img
@@ -257,13 +257,7 @@ function LiveCanvas() {
 
         {/* Preview: sized by the image itself, so the template's exact aspect
             ratio is preserved and it fits both the available width and height. */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-15%" }}
-          transition={spring}
-          className="flex justify-center"
-        >
+        <div className="flex justify-center">
           <div
             className="relative inline-block overflow-hidden rounded-2xl bg-surface-2 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.6)]"
             style={{ containerType: "inline-size" }}
@@ -278,7 +272,7 @@ function LiveCanvas() {
             <Caption text={top} position="top" />
             <Caption text={bottom} position="bottom" />
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
