@@ -1,25 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { MemeWall } from "@/components/meme-wall";
+import { ArrowRight } from "lucide-react";
 import { proxied, templates } from "@/lib/templates";
 
 export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "memm — Manufacturing brain rot" },
+      { title: "memm — the meme editor that respects your taste" },
       {
         name: "description",
         content:
-          "Professional tools for highly unprofessional content. Browse curated templates, edit on a real canvas, export in HD.",
+          "A quiet, precise editor for loud ideas. Curated templates, a real canvas, exports at source resolution. No signup.",
       },
-      { property: "og:title", content: "memm — Manufacturing brain rot" },
+      {
+        property: "og:title",
+        content: "memm — the meme editor that respects your taste",
+      },
       {
         property: "og:description",
         content:
-          "Professional tools for highly unprofessional content. Templates, a real canvas, HD export.",
+          "A quiet, precise editor for loud ideas. Curated templates, a real canvas, exports at source resolution.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -27,7 +29,11 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const spring = { type: "spring" as const, stiffness: 120, damping: 22 };
+const ease = [0.16, 1, 0.3, 1] as const;
+
+/** Landscape hero template — reads best at large sizes. */
+const FEATURE =
+  templates.find((t) => t.width > t.height && t.width >= 1000) ?? templates[0]!;
 
 /** Small-caps editorial label. */
 function Label({
@@ -39,248 +45,43 @@ function Label({
 }) {
   return (
     <span
-      className={`font-mono text-[10px] uppercase tracking-[0.34em] text-muted-foreground ${className}`}
+      className={`font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground ${className}`}
     >
       {children}
     </span>
   );
 }
 
-/**
- * The hero's signature detail: the final headline line is rendered as an actual
- * meme caption — Anton, all caps, black stroke — and it cycles.
- */
-const PUNCHLINES = ["brain rot.", "bangers.", "group-chat gold.", "regret.", "history."];
-
-function CaptionLine() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setI((n) => (n + 1) % PUNCHLINES.length), 2600);
-    return () => clearInterval(id);
-  }, []);
-
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
-    <span className="relative inline-block align-baseline">
-      <motion.span
-        key={i}
-        initial={{ opacity: 0, y: "0.12em" }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
-        className="inline-block uppercase text-background"
-        style={{
-          fontFamily: "Anton, Impact, sans-serif",
-          WebkitTextStroke: "0.035em var(--foreground)",
-          paintOrder: "stroke fill",
-          letterSpacing: "0.005em",
-        }}
-      >
-        {PUNCHLINES[i]}
-      </motion.span>
-    </span>
+    <motion.div
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-12%" }}
+      transition={{ duration: 0.9, ease, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }
 
-function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
-
-  const feature = templates[0]!;
-  const strip = templates.slice(1, 13);
-
-  return (
-    <section ref={ref} className="relative min-h-dvh border-b border-border pt-24">
-      {/* masthead rail */}
-      <div className="flex items-center justify-between border-b border-border px-6 py-3 md:px-10">
-        <Label>memm — meme apparatus</Label>
-        <Label className="hidden sm:inline">
-          {templates.length} templates / no. 001
-        </Label>
-        <Label>est. today</Label>
-      </div>
-
-      <motion.div
-        style={{ y, opacity }}
-        className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr]"
-      >
-        {/* left: headline block */}
-        <div className="flex flex-col justify-center px-6 py-16 md:px-10 md:py-24 lg:border-r lg:border-border">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Label className="text-signal">Productivity is temporary</Label>
-          </motion.div>
-
-          <h1 className="mt-8 text-[16vw] font-semibold leading-[0.82] tracking-[-0.05em] sm:text-[12vw] lg:text-[8.5vw] xl:text-[9rem]">
-            <motion.span
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.08 }}
-              className="block"
-            >
-              Manufacturing
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.18 }}
-              className="mt-1 block"
-            >
-              <CaptionLine />
-            </motion.span>
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...spring, delay: 0.3 }}
-            className="mt-10 max-w-md border-l border-border pl-5 font-mono text-[11px] uppercase leading-[2] tracking-[0.2em] text-muted-foreground"
-          >
-            Serious tools. Deeply unserious output. Curated templates, a real
-            canvas, HD exports — so your worst idea still ships looking expensive.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...spring, delay: 0.38 }}
-            className="mt-10 flex flex-wrap items-center gap-3"
-          >
-            <Link
-              to="/studio"
-              className="group inline-flex h-12 items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              Start a meme
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <a
-              href="#wall"
-              className="inline-flex h-12 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium transition-colors hover:bg-accent"
-            >
-              See the wall
-              <ArrowUpRight className="size-4" />
-            </a>
-          </motion.div>
-        </div>
-
-        {/* right: plate */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...spring, delay: 0.22 }}
-          className="flex flex-col justify-center gap-4 px-6 py-10 md:px-10 lg:py-24"
-        >
-          <div className="flex items-baseline justify-between">
-            <Label className="shrink-0">Plate 01</Label>
-            <Label className="truncate pl-4">{feature.name}</Label>
-          </div>
-          <div className="hairline overflow-hidden rounded-xl bg-surface-2 p-2">
-            <img
-              src={proxied(feature.url)}
-              alt={feature.name}
-              width={feature.width}
-              height={feature.height}
-              className="h-auto w-full rounded-lg object-cover"
-            />
-          </div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-            {feature.width}×{feature.height} — exported at source resolution
-          </p>
-        </motion.div>
-      </motion.div>
-
-      {/* bottom index strip */}
-      <div className="flex items-center gap-3 overflow-hidden border-t border-border px-6 py-4 md:px-10">
-        <Label className="shrink-0">Index</Label>
-        <div className="flex min-w-0 gap-2 overflow-hidden">
-          {strip.map((t) => (
-            <img
-              key={t.id}
-              src={proxied(t.url)}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              className="size-9 shrink-0 rounded-md object-cover opacity-60 transition-opacity duration-300 hover:opacity-100"
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LiveCanvas() {
-  const t = templates[0]!;
-  const [top, setTop] = useState("Opening another editor");
-  const [bottom, setBottom] = useState("Just using memm");
-
-  return (
-    <section className="px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2">
-        <div>
-          <Label>Try it right here</Label>
-          <h2 className="mt-5 text-balance-tight text-4xl font-semibold leading-[1.02] md:text-6xl">
-            No signup. No nonsense.
-          </h2>
-          <p className="mt-6 max-w-md font-mono text-[11px] uppercase leading-[2] tracking-[0.2em] text-muted-foreground">
-            Type. Watch it become a problem for someone's timeline. Same engine as
-            the studio — nothing loads until you decide it should.
-          </p>
-          <div className="mt-8 space-y-2">
-            <input
-              value={top}
-              onChange={(e) => setTop(e.target.value)}
-              aria-label="Top caption"
-              className="h-11 w-full rounded-lg bg-surface-2 px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-signal"
-            />
-            <input
-              value={bottom}
-              onChange={(e) => setBottom(e.target.value)}
-              aria-label="Bottom caption"
-              className="h-11 w-full rounded-lg bg-surface-2 px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-signal"
-            />
-          </div>
-          <Link
-            to="/studio"
-            className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
-          >
-            Open the full studio <ArrowUpRight className="size-4" />
-          </Link>
-        </div>
-
-        {/* Preview: sized by the image itself, so the template's exact aspect
-            ratio is preserved and it fits both the available width and height. */}
-        <div className="flex justify-center">
-          <div className="relative inline-block overflow-hidden rounded-2xl bg-surface-2 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.6)]">
-            <img
-              src={proxied(t.url)}
-              alt={t.name}
-              width={t.width}
-              height={t.height}
-              className="block h-auto max-h-[70svh] w-auto max-w-full object-contain"
-            />
-            <div
-              className="absolute inset-0"
-              style={{ containerType: "inline-size" }}
-            >
-              <Caption text={top} position="top" />
-              <Caption text={bottom} position="bottom" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Caption({ text, position }: { text: string; position: "top" | "bottom" }) {
+function Caption({
+  text,
+  position,
+}: {
+  text: string;
+  position: "top" | "bottom";
+}) {
+  if (!text) return null;
   return (
     <p
       className="absolute inset-x-[6%] text-center text-[clamp(0.9rem,7cqw,3rem)] uppercase leading-[1.05] text-white"
@@ -296,28 +97,356 @@ function Caption({ text, position }: { text: string; position: "top" | "bottom" 
   );
 }
 
+/* ------------------------------------------------------------------ hero */
+
+const PUNCHLINES = ["brain rot", "bangers", "group-chat gold", "folklore"];
+
+/** Signature detail: one word of the headline is typeset as a real meme caption. */
+function Punchline() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setI((n) => (n + 1) % PUNCHLINES.length), 3200);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span className="relative inline-block overflow-hidden align-baseline">
+      <motion.span
+        key={i}
+        initial={{ opacity: 0, y: "0.5em" }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease }}
+        className="inline-block uppercase text-background"
+        style={{
+          fontFamily: "Anton, Impact, sans-serif",
+          WebkitTextStroke: "0.028em var(--foreground)",
+          paintOrder: "stroke fill",
+          letterSpacing: "0.004em",
+        }}
+      >
+        {PUNCHLINES[i]}
+      </motion.span>
+    </span>
+  );
+}
+
+function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const plateY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const plateScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
+  const feature = FEATURE;
+
+  return (
+    <section
+      ref={ref}
+      className="relative isolate overflow-hidden pt-40 md:pt-52"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[55vh] opacity-[0.5]"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--signal) 16%, transparent), transparent 70%)",
+        }}
+      />
+
+      <motion.div
+        style={{ opacity: copyOpacity }}
+        className="relative mx-auto max-w-[78rem] px-6 md:px-10"
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, ease }}
+        >
+          <Label>Meme apparatus — no. 001</Label>
+        </motion.div>
+
+        <h1 className="mt-10 text-[13.5vw] font-semibold leading-[0.86] tracking-[-0.055em] sm:text-[11vw] lg:text-[8.4rem]">
+          <motion.span
+            initial={{ opacity: 0, y: 34 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease, delay: 0.06 }}
+            className="block"
+          >
+            Manufacturing
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 34 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease, delay: 0.16 }}
+            className="mt-2 block"
+          >
+            <Punchline />
+          </motion.span>
+        </h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease, delay: 0.3 }}
+          className="mt-14 grid gap-10 border-t border-border pt-8 md:grid-cols-[1fr_auto] md:items-end"
+        >
+          <p className="max-w-xl font-mono text-[11px] uppercase leading-[2.1] tracking-[0.2em] text-muted-foreground">
+            A quiet, precise editor for extremely loud ideas. Curated templates,
+            a real canvas, exports at source resolution.
+          </p>
+          <div className="flex flex-wrap items-center gap-6">
+            <Link
+              to="/studio"
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium text-background transition-transform duration-300 ease-out hover:-translate-y-0.5"
+            >
+              Start a meme
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+            <a
+              href="#canvas"
+              className="text-sm font-medium text-muted-foreground underline-offset-[6px] transition-colors hover:text-foreground hover:underline"
+            >
+              Try it without leaving
+            </a>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* product plate */}
+      <motion.div
+        style={{ y: plateY, scale: plateScale }}
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, ease, delay: 0.36 }}
+        className="relative mx-auto mt-24 max-w-[78rem] px-6 md:mt-32 md:px-10"
+      >
+        <div className="mx-auto max-w-3xl">
+          <div className="relative overflow-hidden rounded-[1.75rem] bg-surface p-2 shadow-[0_60px_140px_-70px_rgba(0,0,0,0.7)] hairline">
+            <div
+              className="relative overflow-hidden rounded-[1.25rem] bg-surface-2"
+              style={{ containerType: "inline-size" }}
+            >
+              <img
+                src={proxied(feature.url)}
+                alt={feature.name}
+                width={feature.width}
+                height={feature.height}
+                className="block h-auto w-full object-contain"
+              />
+              <Caption text="Ship the idea" position="top" />
+              <Caption text="Not the meeting" position="bottom" />
+            </div>
+          </div>
+          <div className="mt-4 flex items-center justify-between">
+            <Label>{feature.name}</Label>
+            <Label>
+              {feature.width}×{feature.height} — source resolution
+            </Label>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------- ribbon */
+
+function Ribbon() {
+  const strip = templates.slice(1, 25);
+  const loop = [...strip, ...strip];
+  return (
+    <section className="mt-32 overflow-hidden py-10 md:mt-44">
+      <div
+        className="relative"
+        style={{
+          maskImage:
+            "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+        }}
+      >
+        <div
+          className="marquee-track flex w-max gap-4"
+          style={{ "--marquee-duration": "80s" } as React.CSSProperties}
+        >
+          {loop.map((t, i) => (
+            <img
+              key={`${t.id}-${i}`}
+              src={proxied(t.url)}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              className="h-24 w-auto shrink-0 rounded-lg object-cover opacity-70 grayscale transition duration-500 hover:opacity-100 hover:grayscale-0 md:h-32"
+            />
+          ))}
+        </div>
+      </div>
+      <Reveal className="mx-auto mt-10 max-w-[78rem] px-6 md:px-10">
+        <Label>{templates.length} templates, curated — nothing filler</Label>
+      </Reveal>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------ triptych */
+
+const PILLARS = [
+  {
+    n: "01",
+    title: "A library, not a landfill",
+    body: "Every template hand-checked and categorised. Search is instant. Favourites persist. Nothing loads that you didn't ask for.",
+  },
+  {
+    n: "02",
+    title: "A canvas that behaves",
+    body: "Drag, type, restyle. Real typography controls — weight, stroke, shadow, alignment — with the restraint of a design tool.",
+  },
+  {
+    n: "03",
+    title: "Exports at full fidelity",
+    body: "Rendered to canvas at the template's native resolution. No watermark, no upsell, no account. Just a file.",
+  },
+];
+
+function Pillars() {
+  return (
+    <section className="mx-auto mt-32 max-w-[78rem] px-6 md:mt-48 md:px-10">
+      <Reveal>
+        <h2 className="max-w-2xl text-balance-tight text-4xl font-semibold leading-[1.04] md:text-6xl">
+          Built like a design tool. Used like a group chat.
+        </h2>
+      </Reveal>
+      <div className="mt-20 grid gap-px border-t border-border md:grid-cols-3">
+        {PILLARS.map((p, i) => (
+          <Reveal
+            key={p.n}
+            delay={i * 0.08}
+            className="border-b border-border py-10 md:border-b-0 md:border-r md:px-8 md:py-12 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+          >
+            <Label>{p.n}</Label>
+            <h3 className="mt-6 text-xl font-medium tracking-[-0.02em]">
+              {p.title}
+            </h3>
+            <p className="mt-4 max-w-sm text-[15px] leading-[1.75] text-muted-foreground">
+              {p.body}
+            </p>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------------------------------------- live canvas */
+
+function LiveCanvas() {
+  const t = FEATURE;
+  const [top, setTop] = useState("Opening another editor");
+  const [bottom, setBottom] = useState("Just using memm");
+
+  return (
+    <section
+      id="canvas"
+      className="mx-auto mt-32 max-w-[78rem] scroll-mt-24 px-6 md:mt-48 md:px-10"
+    >
+      <div className="grid items-center gap-16 lg:grid-cols-[0.85fr_1fr] lg:gap-24">
+        <Reveal>
+          <Label>Live — this is the real engine</Label>
+          <h2 className="mt-6 text-balance-tight text-4xl font-semibold leading-[1.04] md:text-5xl">
+            Type here. Regret it later.
+          </h2>
+          <p className="mt-6 max-w-md text-[15px] leading-[1.8] text-muted-foreground">
+            No modal, no onboarding tour, no "welcome to your workspace". The
+            same renderer that ships your HD export is running in this box right
+            now — it just hasn't been asked for much yet.
+          </p>
+
+          <div className="mt-10 space-y-3">
+            {[
+              { v: top, set: setTop, label: "Top caption" },
+              { v: bottom, set: setBottom, label: "Bottom caption" },
+            ].map((f) => (
+              <div key={f.label} className="group relative">
+                <label className="pointer-events-none absolute -top-2 left-3 bg-background px-1.5 font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground">
+                  {f.label}
+                </label>
+                <input
+                  value={f.v}
+                  onChange={(e) => f.set(e.target.value)}
+                  aria-label={f.label}
+                  className="h-12 w-full rounded-xl border border-border bg-transparent px-4 text-sm outline-none transition-colors focus-visible:border-foreground"
+                />
+              </div>
+            ))}
+          </div>
+
+          <Link
+            to="/studio"
+            className="group mt-10 inline-flex items-center gap-2 text-sm font-medium underline-offset-[6px] hover:underline"
+          >
+            Open the full studio
+            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </Reveal>
+
+        <Reveal delay={0.1} className="flex justify-center">
+          <div
+            className="relative w-full max-w-xl overflow-hidden rounded-2xl bg-surface-2 shadow-[0_50px_120px_-60px_rgba(0,0,0,0.65)]"
+            style={{
+              containerType: "inline-size",
+              aspectRatio: `${t.width} / ${t.height}`,
+              maxHeight: "68svh",
+            }}
+          >
+            <img
+              src={proxied(t.url)}
+              alt={t.name}
+              width={t.width}
+              height={t.height}
+              className="block size-full object-contain"
+            />
+            <Caption text={top} position="top" />
+            <Caption text={bottom} position="bottom" />
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------- closer */
+
 function Closer() {
   return (
-    <section className="relative border-t border-border px-6 py-32 text-center md:py-40">
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-20%" }}
-        transition={spring}
-        className="mx-auto max-w-3xl text-balance-tight text-[12vw] font-semibold leading-[0.9] md:text-[6rem]"
-      >
-        Go make something unserious.
-      </motion.h2>
-      <Link
-        to="/studio"
-        className="group mt-12 inline-flex h-14 items-center gap-2 rounded-full bg-foreground pl-7 pr-6 text-[15px] font-medium text-background transition-transform duration-200 hover:-translate-y-0.5"
-      >
-        Start a meme
-        <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-      </Link>
-      <footer className="mt-24 flex flex-col items-center gap-3">
-        <img src="/logo.png" alt="memm" className="size-8 rounded-lg" />
-        <Label>memm — dopamine engineering since today</Label>
+    <section className="mt-40 border-t border-border md:mt-56">
+      <div className="mx-auto max-w-[78rem] px-6 py-32 md:px-10 md:py-44">
+        <Reveal>
+          <h2 className="max-w-4xl text-balance-tight text-[11vw] font-semibold leading-[0.92] md:text-[5.5rem]">
+            Go make something unserious.
+          </h2>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <Link
+            to="/studio"
+            className="group mt-14 inline-flex h-14 items-center gap-2 rounded-full bg-foreground pl-7 pr-6 text-[15px] font-medium text-background transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            Start a meme
+            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </Reveal>
+      </div>
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-[78rem] flex-col gap-4 px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10">
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="memm" className="size-6 rounded-md" />
+            <Label className="text-foreground">memm</Label>
+          </div>
+          <Label>Dopamine engineering — est. today</Label>
+        </div>
       </footer>
     </section>
   );
@@ -327,15 +456,8 @@ function Home() {
   return (
     <div className="overflow-x-clip">
       <Hero />
-      <section id="wall" className="px-3 py-28 md:px-10 md:py-36">
-        <div className="mx-auto mb-12 max-w-6xl">
-          <Label>The wall</Label>
-          <h2 className="mt-5 max-w-xl text-balance-tight text-4xl font-semibold md:text-5xl">
-            Every template, always moving.
-          </h2>
-        </div>
-        <MemeWall />
-      </section>
+      <Ribbon />
+      <Pillars />
       <LiveCanvas />
       <Closer />
     </div>
