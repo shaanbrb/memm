@@ -258,10 +258,7 @@ function LiveCanvas() {
         {/* Preview: sized by the image itself, so the template's exact aspect
             ratio is preserved and it fits both the available width and height. */}
         <div className="flex justify-center">
-          <div
-            className="relative inline-block overflow-hidden rounded-2xl bg-surface-2 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.6)]"
-            style={{ containerType: "inline-size" }}
-          >
+          <div className="relative inline-block overflow-hidden rounded-2xl bg-surface-2 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.6)]">
             <img
               src={proxied(t.url)}
               alt={t.name}
@@ -269,8 +266,13 @@ function LiveCanvas() {
               height={t.height}
               className="block h-auto max-h-[70svh] w-auto max-w-full object-contain"
             />
-            <Caption text={top} position="top" />
-            <Caption text={bottom} position="bottom" />
+            <div
+              className="absolute inset-0"
+              style={{ containerType: "inline-size" }}
+            >
+              <Caption text={top} position="top" />
+              <Caption text={bottom} position="bottom" />
+            </div>
           </div>
         </div>
       </div>
