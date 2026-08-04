@@ -137,13 +137,17 @@ function Hero() {
   const plateScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-  const feature = templates[0]!;
+  const feature =
+    templates.find((t) => t.width > t.height && t.width >= 1000) ?? templates[0]!;
 
   return (
-    <section ref={ref} className="relative overflow-hidden pt-40 md:pt-52">
+    <section
+      ref={ref}
+      className="relative isolate overflow-hidden pt-40 md:pt-52"
+    >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[70vh] opacity-[0.55]"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[55vh] opacity-[0.5]"
         style={{
           background:
             "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--signal) 16%, transparent), transparent 70%)",
