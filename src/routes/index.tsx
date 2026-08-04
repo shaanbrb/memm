@@ -392,15 +392,19 @@ function LiveCanvas() {
 
         <Reveal delay={0.1} className="flex justify-center">
           <div
-            className="relative inline-block overflow-hidden rounded-2xl bg-surface-2 shadow-[0_50px_120px_-60px_rgba(0,0,0,0.65)]"
-            style={{ containerType: "inline-size" }}
+            className="relative w-full max-w-xl overflow-hidden rounded-2xl bg-surface-2 shadow-[0_50px_120px_-60px_rgba(0,0,0,0.65)]"
+            style={{
+              containerType: "inline-size",
+              aspectRatio: `${t.width} / ${t.height}`,
+              maxHeight: "68svh",
+            }}
           >
             <img
               src={proxied(t.url)}
               alt={t.name}
               width={t.width}
               height={t.height}
-              className="block h-auto max-h-[68svh] w-auto max-w-full object-contain"
+              className="block size-full object-contain"
             />
             <Caption text={top} position="top" />
             <Caption text={bottom} position="bottom" />
