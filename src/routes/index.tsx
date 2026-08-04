@@ -31,6 +31,10 @@ export const Route = createFileRoute("/")({
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+/** Landscape hero template — reads best at large sizes. */
+const FEATURE =
+  templates.find((t) => t.width > t.height && t.width >= 1000) ?? templates[0]!;
+
 /** Small-caps editorial label. */
 function Label({
   children,
@@ -137,8 +141,7 @@ function Hero() {
   const plateScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-  const feature =
-    templates.find((t) => t.width > t.height && t.width >= 1000) ?? templates[0]!;
+  const feature = FEATURE;
 
   return (
     <section
@@ -341,7 +344,7 @@ function Pillars() {
 /* --------------------------------------------------------- live canvas */
 
 function LiveCanvas() {
-  const t = templates[0]!;
+  const t = FEATURE;
   const [top, setTop] = useState("Opening another editor");
   const [bottom, setBottom] = useState("Just using memm");
 
