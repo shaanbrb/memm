@@ -342,15 +342,7 @@ function Closer() {
           </Link>
         </Reveal>
       </div>
-      <footer>
-        <div className="mx-auto flex max-w-[74rem] flex-col gap-4 px-6 pb-12 md:flex-row md:items-center md:justify-between md:px-10">
-          <div className="flex items-center gap-2.5">
-            <img src="/logo.png" alt="memm" className="size-6 rounded-md" />
-            <Label className="text-foreground">memm — engineering memes</Label>
-          </div>
-          <Label>no account. no watermark.</Label>
-        </div>
-      </footer>
+      
     </section>
   );
 }
