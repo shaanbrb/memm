@@ -53,9 +53,31 @@ function Studio() {
   const [mobilePanel, setMobilePanel] = useState<"templates" | "text" | null>(null);
 
   const boxRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [stage, setStage] = useState({ w: 0, h: 0 });
 
   const ratio = source ? source.width / source.height : 1;
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const r = entry!.contentRect;
+      setStage({ w: r.width, h: r.height });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Largest box that fits the stage while keeping the source aspect ratio.
+  const fit = (() => {
+    const maxW = Math.min(stage.w, 720);
+    const maxH = stage.h;
+    if (!maxW || !maxH) return { width: "100%", height: "auto" as const };
+    const w = Math.min(maxW, maxH * ratio);
+    return { width: `${w}px`, height: `${w / ratio}px` };
+  })();
 
   const update = useCallback((id: string, patch: Partial<TextLayer>) => {
     setLayers((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
