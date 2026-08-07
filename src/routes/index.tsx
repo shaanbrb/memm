@@ -168,14 +168,13 @@ function LiveCanvas() {
       className="mx-auto max-w-[74rem] scroll-mt-24 px-6 py-32 md:px-10 md:py-48"
     >
       <Reveal className="mx-auto max-w-2xl text-center">
-        <Label>Live — this is the actual renderer</Label>
-        <h2 className="mt-7 text-balance-tight text-4xl font-medium leading-[1.05] md:text-6xl">
-          Type in the box. It responds instantly.
+        <h2 className="text-balance-tight text-4xl font-medium lowercase leading-[1.05] md:text-6xl">
+          type in the boxes. the caption redraws on the image.
         </h2>
-        <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.8] text-muted-foreground">
-          No sign-up wall, no tour, no "welcome to your workspace." The same
-          engine that renders your export is idling here, waiting to be given
-          something regrettable.
+        <p className="mx-auto mt-6 max-w-lg text-[15px] lowercase leading-[1.8] text-muted-foreground">
+          this is the {t.name.toLowerCase()} template at {t.width}×{t.height},
+          drawn by the same code that writes your download. edit the top or
+          bottom line and it lands on the image as you type.
         </p>
       </Reveal>
 
@@ -205,11 +204,11 @@ function LiveCanvas() {
         className="mx-auto mt-8 grid max-w-2xl gap-3 sm:grid-cols-2"
       >
         {[
-          { v: top, set: setTop, label: "Top caption" },
-          { v: bottom, set: setBottom, label: "Bottom caption" },
+          { v: top, set: setTop, label: "top caption" },
+          { v: bottom, set: setBottom, label: "bottom caption" },
         ].map((f) => (
           <div key={f.label} className="relative">
-            <label className="pointer-events-none absolute -top-2 left-3 bg-background px-1.5 font-mono text-[9px] uppercase tracking-[0.26em] text-muted-foreground">
+            <label className="pointer-events-none absolute -top-2 left-3 bg-background px-1.5 font-mono text-[10px] lowercase tracking-[0.12em] text-muted-foreground">
               {f.label}
             </label>
             <input
@@ -222,12 +221,22 @@ function LiveCanvas() {
         ))}
       </Reveal>
 
-      <Reveal delay={0.16} className="mt-10 text-center">
+      <Reveal
+        delay={0.16}
+        className="mt-10 flex flex-col items-center gap-5 sm:flex-row sm:justify-center"
+      >
         <Link
           to="/studio"
-          className="group inline-flex items-center gap-2 text-sm font-medium underline-offset-[6px] hover:underline"
+          className="group inline-flex h-12 items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium lowercase text-background transition-transform duration-300 ease-out hover:-translate-y-0.5"
         >
-          Open the full studio
+          start a meme
+          <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+        <Link
+          to="/studio"
+          className="group inline-flex items-center gap-2 text-sm font-medium lowercase underline-offset-[6px] hover:underline"
+        >
+          open the full studio
           <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       </Reveal>
