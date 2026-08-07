@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "./theme-provider";
 
@@ -34,10 +35,21 @@ function ThemeToggle() {
 }
 
 export function FloatingNav() {
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useMotionValueEvent(scrollY, "change", (y) => {
+    // once past the hero, hide it permanently — never re-show on scroll up
+    if (y > 120) setHidden(true);
+  });
+
   if (pathname.startsWith("/studio")) return null;
+
   return (
-    <header
+    <motion.header
+      animate={{ y: hidden ? -110 : 0, opacity: hidden ? 0 : 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 32 }}
       className="fixed inset-x-0 top-0 z-50 px-6 py-4 md:px-10"
     >
       <nav className="mx-auto flex w-full max-w-[74rem] items-center justify-between gap-4">
@@ -59,6 +71,6 @@ export function FloatingNav() {
         </Link>
         <ThemeToggle />
       </nav>
-    </header>
+    </motion.header>
   );
 }
