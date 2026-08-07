@@ -171,7 +171,7 @@ function LiveCanvas() {
         <h2 className="text-balance-tight text-4xl font-medium lowercase leading-[1.05] md:text-6xl">
           make the kind of meme people save instead of scroll past.
         </h2>
-        <p className="mx-auto mt-6 max-w-lg text-[15px] lowercase leading-[1.8] text-muted">
+        <p className="mx-auto mt-6 max-w-xl text-[16px] lowercase leading-[1.8] text-white/75">
   all that's left is finding the right image, writing the caption, and sending it before someone else thinks of it.
 </p>
       </Reveal>
