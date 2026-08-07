@@ -60,6 +60,6 @@ export function FloatingNav() {
         </Link>
         <ThemeToggle />
       </nav>
-    </motion.header>
+    </header>
   );
 }
