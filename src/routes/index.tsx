@@ -277,7 +277,7 @@ function Ribbon() {
         </div>
       </div>
       <div className="mx-auto mt-8 max-w-[74rem] px-6 md:px-10">
-        <Label>{templates.length} templates, curated — nothing filler</Label>
+        <Label>{templates.length} templates, searchable by name</Label>
       </div>
     </section>
   );
@@ -287,16 +287,16 @@ function Ribbon() {
 
 const SPEC = [
   {
-    title: "A library, not a landfill",
-    body: "Every template checked and categorised. Search is instant, favourites persist, nothing loads that you didn't ask for.",
+    title: "100 templates, hand-checked",
+    body: "every template was opened, checked for resolution and cropping, and tagged. search filters them as you type, and the ones you star stay at the top.",
   },
   {
-    title: "A canvas that behaves",
-    body: "Drag, type, restyle. Real typography controls — weight, stroke, shadow, alignment — with the restraint of a design tool.",
+    title: "typography controls on the canvas",
+    body: "set weight, size, stroke width, shadow and alignment per text block. drag a caption anywhere on the image and it lands where you drop it.",
   },
   {
-    title: "Exports at full fidelity",
-    body: "Rendered at the template's native resolution. No watermark, no upsell, no account. Just a file.",
+    title: "exports at the template's own resolution",
+    body: "download writes a png at the source image's native pixel size. no watermark, no account, no sign-in step.",
   },
 ];
 
@@ -304,17 +304,17 @@ function Spec() {
   return (
     <section className="mx-auto max-w-[74rem] px-6 py-32 md:px-10 md:py-44">
       <Reveal>
-        <h2 className="max-w-2xl text-balance-tight text-4xl font-medium leading-[1.06] md:text-5xl">
-          Built like an instrument. Used like a group chat.
+        <h2 className="max-w-2xl text-balance-tight text-4xl font-medium lowercase leading-[1.06] md:text-5xl">
+          what memm actually does.
         </h2>
       </Reveal>
       <div className="mt-20 grid gap-16 md:grid-cols-3 md:gap-12">
         {SPEC.map((p, i) => (
           <Reveal key={p.title} delay={i * 0.07}>
-            <h3 className="text-lg font-medium tracking-[-0.02em]">
+            <h3 className="text-lg font-medium lowercase tracking-[-0.02em]">
               {p.title}
             </h3>
-            <p className="mt-4 max-w-sm text-[15px] leading-[1.8] text-muted-foreground">
+            <p className="mt-4 max-w-sm text-[15px] lowercase leading-[1.8] text-muted-foreground">
               {p.body}
             </p>
           </Reveal>
@@ -331,16 +331,16 @@ function Closer() {
     <section>
       <div className="mx-auto max-w-[74rem] px-6 py-36 text-center md:px-10 md:py-48">
         <Reveal>
-          <h2 className="mx-auto max-w-3xl text-balance-tight text-[12vw] font-medium leading-[0.92] md:text-[5rem]">
-            Go make something unserious.
+          <h2 className="mx-auto max-w-3xl text-balance-tight text-[12vw] font-medium lowercase leading-[0.92] md:text-[5rem]">
+            go make something unserious.
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
           <Link
             to="/studio"
-            className="group mt-14 inline-flex h-14 items-center gap-2 rounded-full bg-foreground pl-7 pr-6 text-[15px] font-medium text-background transition-transform duration-300 hover:-translate-y-0.5"
+            className="group mt-14 inline-flex h-14 items-center gap-2 rounded-full bg-foreground pl-7 pr-6 text-[15px] font-medium lowercase text-background transition-transform duration-300 hover:-translate-y-0.5"
           >
-            Open the studio
+            start a meme
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </Reveal>
@@ -351,7 +351,7 @@ function Closer() {
             <img src="/logo.png" alt="memm" className="size-6 rounded-md" />
             <Label className="text-foreground">memm — engineering memes</Label>
           </div>
-          <Label>No account. No watermark.</Label>
+          <Label>no account. no watermark.</Label>
         </div>
       </footer>
     </section>
