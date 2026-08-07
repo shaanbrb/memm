@@ -42,7 +42,7 @@ function Label({
 }) {
   return (
     <span
-      className={`font-mono text-[10px] uppercase tracking-[0.34em] text-muted-foreground ${className}`}
+      className={`font-mono text-[11px] lowercase tracking-[0.14em] text-muted-foreground ${className}`}
     >
       {children}
     </span>
