@@ -66,7 +66,7 @@ export function FloatingNav() {
             className="size-7 rounded-lg"
           />
           <span className="text-[15px] font-medium lowercase tracking-[0.01em]">
-            memm — engineering memes
+            memm
           </span>
         </Link>
         <ThemeToggle />
