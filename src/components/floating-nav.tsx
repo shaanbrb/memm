@@ -65,9 +65,13 @@ export function FloatingNav() {
             height={28}
             className="size-7 rounded-lg"
           />
-          <span className="text-[15px] font-semibold tracking-[-0.03em]">
-            memm
+          <span
+            className="text-[15px] font-medium tracking-[0.06em]"
+            style={{ fontVariantCaps: "all-small-caps" }}
+          >
+            memm — engineering memes
           </span>
+
         </Link>
         <ThemeToggle />
       </nav>

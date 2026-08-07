@@ -8,20 +8,17 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "memm — the meme editor that respects your taste" },
+      { title: "memm - engineering memes" },
       {
         name: "description",
         content:
-          "A quiet, precise editor for loud ideas. Curated templates, a real canvas, exports at source resolution. No signup.",
+          "A precise editor for unserious output. Curated templates, a real canvas, exports at source resolution. No account, no watermark.",
       },
-      {
-        property: "og:title",
-        content: "memm — the meme editor that respects your taste",
-      },
+      { property: "og:title", content: "memm - engineering memes" },
       {
         property: "og:description",
         content:
-          "A quiet, precise editor for loud ideas. Curated templates, a real canvas, exports at source resolution.",
+          "A precise editor for unserious output. Curated templates, a real canvas, exports at source resolution.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -45,7 +42,7 @@ function Label({
 }) {
   return (
     <span
-      className={`font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground ${className}`}
+      className={`font-mono text-[10px] uppercase tracking-[0.34em] text-muted-foreground ${className}`}
     >
       {children}
     </span>
@@ -63,7 +60,7 @@ function Reveal({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 22 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12%" }}
       transition={{ duration: 0.9, ease, delay }}
@@ -99,244 +96,69 @@ function Caption({
 
 /* ------------------------------------------------------------------ hero */
 
-const PUNCHLINES = ["brain rot", "bangers", "group-chat gold", "folklore"];
-
-/** Signature detail: one word of the headline is typeset as a real meme caption. */
-function Punchline() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setI((n) => (n + 1) % PUNCHLINES.length), 3200);
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <span className="relative inline-block overflow-hidden align-baseline">
-      <motion.span
-        key={i}
-        initial={{ opacity: 0, y: "0.5em" }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease }}
-        className="inline-block uppercase text-background"
-        style={{
-          fontFamily: "Anton, Impact, sans-serif",
-          WebkitTextStroke: "0.028em var(--foreground)",
-          paintOrder: "stroke fill",
-          letterSpacing: "0.004em",
-        }}
-      >
-        {PUNCHLINES[i]}
-      </motion.span>
-    </span>
-  );
-}
-
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const plateY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const plateScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-
-  const feature = FEATURE;
+  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate overflow-hidden pt-40 md:pt-52"
+      className="relative flex min-h-[92svh] items-center overflow-hidden"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[55vh] opacity-[0.5]"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--signal) 16%, transparent), transparent 70%)",
-        }}
-      />
-
       <motion.div
-        style={{ opacity: copyOpacity }}
-        className="relative mx-auto max-w-[78rem] px-6 md:px-10"
+        style={{ opacity: fade }}
+        className="mx-auto w-full max-w-[74rem] px-6 pb-24 pt-44 md:px-10 md:pt-48"
       >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease }}
+          transition={{ duration: 0.8, ease, delay: 0.1 }}
         >
-          <Label>Meme apparatus — no. 001</Label>
+          <Label>memm — meme apparatus</Label>
         </motion.div>
 
-        <h1 className="mt-10 text-[13.5vw] font-semibold leading-[0.86] tracking-[-0.055em] sm:text-[11vw] lg:text-[8.4rem]">
+        <h1 className="mt-12 text-[15vw] font-medium leading-[0.85] tracking-[-0.055em] sm:text-[12vw] lg:text-[9.5rem]">
           <motion.span
-            initial={{ opacity: 0, y: 34 }}
+            initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease, delay: 0.06 }}
+            transition={{ duration: 1.1, ease, delay: 0.05 }}
             className="block"
           >
-            Manufacturing
+            engineering
           </motion.span>
           <motion.span
-            initial={{ opacity: 0, y: 34 }}
+            initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease, delay: 0.16 }}
-            className="mt-2 block"
+            transition={{ duration: 1.1, ease, delay: 0.14 }}
+            className="block text-muted-foreground"
           >
-            <Punchline />
+            memes.
           </motion.span>
         </h1>
 
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease, delay: 0.3 }}
-          className="mt-14 grid gap-10 border-t border-border pt-8 md:grid-cols-[1fr_auto] md:items-end"
+          transition={{ duration: 1, ease, delay: 0.34 }}
+          className="mt-16 flex flex-col gap-10 md:flex-row md:items-end md:justify-between"
         >
-          <p className="max-w-xl font-mono text-[11px] uppercase leading-[2.1] tracking-[0.2em] text-muted-foreground">
-            A quiet, precise editor for extremely loud ideas. Curated templates,
-            a real canvas, exports at source resolution.
+          <p className="max-w-md font-mono text-[11px] uppercase leading-[2.2] tracking-[0.22em] text-muted-foreground">
+            A precise instrument for unserious output. Curated templates, a real
+            canvas, exports at source resolution.
           </p>
-          <div className="flex flex-wrap items-center gap-6">
-            <Link
-              to="/studio"
-              className="group inline-flex h-12 items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium text-background transition-transform duration-300 ease-out hover:-translate-y-0.5"
-            >
-              Start a meme
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <a
-              href="#canvas"
-              className="text-sm font-medium text-muted-foreground underline-offset-[6px] transition-colors hover:text-foreground hover:underline"
-            >
-              Try it without leaving
-            </a>
-          </div>
+          <Link
+            to="/studio"
+            className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium text-background transition-transform duration-300 ease-out hover:-translate-y-0.5"
+          >
+            Open the studio
+            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </motion.div>
       </motion.div>
-
-      {/* product plate */}
-      <motion.div
-        style={{ y: plateY, scale: plateScale }}
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease, delay: 0.36 }}
-        className="relative mx-auto mt-24 max-w-[78rem] px-6 md:mt-32 md:px-10"
-      >
-        <div className="mx-auto max-w-3xl">
-          <div className="relative overflow-hidden rounded-[1.75rem] bg-surface p-2 shadow-[0_60px_140px_-70px_rgba(0,0,0,0.7)] hairline">
-            <div
-              className="relative overflow-hidden rounded-[1.25rem] bg-surface-2"
-              style={{ containerType: "inline-size" }}
-            >
-              <img
-                src={proxied(feature.url)}
-                alt={feature.name}
-                width={feature.width}
-                height={feature.height}
-                className="block h-auto w-full object-contain"
-              />
-              <Caption text="Ship the idea" position="top" />
-              <Caption text="Not the meeting" position="bottom" />
-            </div>
-          </div>
-          <div className="mt-4 flex items-center justify-between">
-            <Label>{feature.name}</Label>
-            <Label>
-              {feature.width}×{feature.height} — source resolution
-            </Label>
-          </div>
-        </div>
-      </motion.div>
-    </section>
-  );
-}
-
-/* -------------------------------------------------------------- ribbon */
-
-function Ribbon() {
-  const strip = templates.slice(1, 25);
-  const loop = [...strip, ...strip];
-  return (
-    <section className="mt-32 overflow-hidden py-10 md:mt-44">
-      <div
-        className="relative"
-        style={{
-          maskImage:
-            "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
-          WebkitMaskImage:
-            "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
-        }}
-      >
-        <div
-          className="marquee-track flex w-max gap-4"
-          style={{ "--marquee-duration": "80s" } as React.CSSProperties}
-        >
-          {loop.map((t, i) => (
-            <img
-              key={`${t.id}-${i}`}
-              src={proxied(t.url)}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              className="h-24 w-auto shrink-0 rounded-lg object-cover opacity-70 grayscale transition duration-500 hover:opacity-100 hover:grayscale-0 md:h-32"
-            />
-          ))}
-        </div>
-      </div>
-      <Reveal className="mx-auto mt-10 max-w-[78rem] px-6 md:px-10">
-        <Label>{templates.length} templates, curated — nothing filler</Label>
-      </Reveal>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------ triptych */
-
-const PILLARS = [
-  {
-    n: "01",
-    title: "A library, not a landfill",
-    body: "Every template hand-checked and categorised. Search is instant. Favourites persist. Nothing loads that you didn't ask for.",
-  },
-  {
-    n: "02",
-    title: "A canvas that behaves",
-    body: "Drag, type, restyle. Real typography controls — weight, stroke, shadow, alignment — with the restraint of a design tool.",
-  },
-  {
-    n: "03",
-    title: "Exports at full fidelity",
-    body: "Rendered to canvas at the template's native resolution. No watermark, no upsell, no account. Just a file.",
-  },
-];
-
-function Pillars() {
-  return (
-    <section className="mx-auto mt-32 max-w-[78rem] px-6 md:mt-48 md:px-10">
-      <Reveal>
-        <h2 className="max-w-2xl text-balance-tight text-4xl font-semibold leading-[1.04] md:text-6xl">
-          Built like a design tool. Used like a group chat.
-        </h2>
-      </Reveal>
-      <div className="mt-20 grid gap-px border-t border-border md:grid-cols-3">
-        {PILLARS.map((p, i) => (
-          <Reveal
-            key={p.n}
-            delay={i * 0.08}
-            className="border-b border-border py-10 md:border-b-0 md:border-r md:px-8 md:py-12 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
-          >
-            <Label>{p.n}</Label>
-            <h3 className="mt-6 text-xl font-medium tracking-[-0.02em]">
-              {p.title}
-            </h3>
-            <p className="mt-4 max-w-sm text-[15px] leading-[1.75] text-muted-foreground">
-              {p.body}
-            </p>
-          </Reveal>
-        ))}
-      </div>
     </section>
   );
 }
@@ -351,68 +173,151 @@ function LiveCanvas() {
   return (
     <section
       id="canvas"
-      className="mx-auto mt-32 max-w-[78rem] scroll-mt-24 px-6 md:mt-48 md:px-10"
+      className="mx-auto max-w-[74rem] scroll-mt-24 px-6 py-32 md:px-10 md:py-48"
     >
-      <div className="grid items-center gap-16 lg:grid-cols-[0.85fr_1fr] lg:gap-24">
-        <Reveal>
-          <Label>Live — this is the real engine</Label>
-          <h2 className="mt-6 text-balance-tight text-4xl font-semibold leading-[1.04] md:text-5xl">
-            Type here. Regret it later.
-          </h2>
-          <p className="mt-6 max-w-md text-[15px] leading-[1.8] text-muted-foreground">
-            No modal, no onboarding tour, no "welcome to your workspace". The
-            same renderer that ships your HD export is running in this box right
-            now — it just hasn't been asked for much yet.
-          </p>
+      <Reveal className="mx-auto max-w-2xl text-center">
+        <Label>Live — this is the actual renderer</Label>
+        <h2 className="mt-7 text-balance-tight text-4xl font-medium leading-[1.05] md:text-6xl">
+          Type in the box. It responds instantly.
+        </h2>
+        <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.8] text-muted-foreground">
+          No sign-up wall, no tour, no "welcome to your workspace." The same
+          engine that renders your export is idling here, waiting to be given
+          something regrettable.
+        </p>
+      </Reveal>
 
-          <div className="mt-10 space-y-3">
-            {[
-              { v: top, set: setTop, label: "Top caption" },
-              { v: bottom, set: setBottom, label: "Bottom caption" },
-            ].map((f) => (
-              <div key={f.label} className="group relative">
-                <label className="pointer-events-none absolute -top-2 left-3 bg-background px-1.5 font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground">
-                  {f.label}
-                </label>
-                <input
-                  value={f.v}
-                  onChange={(e) => f.set(e.target.value)}
-                  aria-label={f.label}
-                  className="h-12 w-full rounded-xl border border-border bg-transparent px-4 text-sm outline-none transition-colors focus-visible:border-foreground"
-                />
-              </div>
-            ))}
-          </div>
+      <Reveal delay={0.08} className="mt-16 flex justify-center">
+        <div
+          className="relative w-full max-w-2xl overflow-hidden rounded-2xl bg-surface-2"
+          style={{
+            containerType: "inline-size",
+            aspectRatio: `${t.width} / ${t.height}`,
+            maxHeight: "62svh",
+          }}
+        >
+          <img
+            src={proxied(t.url)}
+            alt={t.name}
+            width={t.width}
+            height={t.height}
+            className="block size-full object-contain"
+          />
+          <Caption text={top} position="top" />
+          <Caption text={bottom} position="bottom" />
+        </div>
+      </Reveal>
 
-          <Link
-            to="/studio"
-            className="group mt-10 inline-flex items-center gap-2 text-sm font-medium underline-offset-[6px] hover:underline"
-          >
-            Open the full studio
-            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </Reveal>
-
-        <Reveal delay={0.1} className="flex justify-center">
-          <div
-            className="relative w-full max-w-xl overflow-hidden rounded-2xl bg-surface-2 shadow-[0_50px_120px_-60px_rgba(0,0,0,0.65)]"
-            style={{
-              containerType: "inline-size",
-              aspectRatio: `${t.width} / ${t.height}`,
-              maxHeight: "68svh",
-            }}
-          >
-            <img
-              src={proxied(t.url)}
-              alt={t.name}
-              width={t.width}
-              height={t.height}
-              className="block size-full object-contain"
+      <Reveal
+        delay={0.12}
+        className="mx-auto mt-8 grid max-w-2xl gap-3 sm:grid-cols-2"
+      >
+        {[
+          { v: top, set: setTop, label: "Top caption" },
+          { v: bottom, set: setBottom, label: "Bottom caption" },
+        ].map((f) => (
+          <div key={f.label} className="relative">
+            <label className="pointer-events-none absolute -top-2 left-3 bg-background px-1.5 font-mono text-[9px] uppercase tracking-[0.26em] text-muted-foreground">
+              {f.label}
+            </label>
+            <input
+              value={f.v}
+              onChange={(e) => f.set(e.target.value)}
+              aria-label={f.label}
+              className="h-12 w-full rounded-xl border border-border bg-transparent px-4 text-sm outline-none transition-colors focus-visible:border-foreground"
             />
-            <Caption text={top} position="top" />
-            <Caption text={bottom} position="bottom" />
           </div>
-        </Reveal>
+        ))}
+      </Reveal>
+
+      <Reveal delay={0.16} className="mt-10 text-center">
+        <Link
+          to="/studio"
+          className="group inline-flex items-center gap-2 text-sm font-medium underline-offset-[6px] hover:underline"
+        >
+          Open the full studio
+          <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      </Reveal>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------- ribbon */
+
+function Ribbon() {
+  const strip = templates.slice(1, 25);
+  const loop = [...strip, ...strip];
+  return (
+    <section className="overflow-hidden py-8">
+      <div
+        className="relative"
+        style={{
+          maskImage:
+            "linear-gradient(90deg, transparent, black 14%, black 86%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent, black 14%, black 86%, transparent)",
+        }}
+      >
+        <div
+          className="marquee-track flex w-max gap-4"
+          style={{ "--marquee-duration": "90s" } as React.CSSProperties}
+        >
+          {loop.map((t, i) => (
+            <img
+              key={`${t.id}-${i}`}
+              src={proxied(t.url)}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              className="h-20 w-auto shrink-0 rounded-lg object-cover opacity-40 grayscale md:h-24"
+            />
+          ))}
+        </div>
+      </div>
+      <div className="mx-auto mt-8 max-w-[74rem] px-6 md:px-10">
+        <Label>{templates.length} templates, curated — nothing filler</Label>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------ the spec */
+
+const SPEC = [
+  {
+    title: "A library, not a landfill",
+    body: "Every template checked and categorised. Search is instant, favourites persist, nothing loads that you didn't ask for.",
+  },
+  {
+    title: "A canvas that behaves",
+    body: "Drag, type, restyle. Real typography controls — weight, stroke, shadow, alignment — with the restraint of a design tool.",
+  },
+  {
+    title: "Exports at full fidelity",
+    body: "Rendered at the template's native resolution. No watermark, no upsell, no account. Just a file.",
+  },
+];
+
+function Spec() {
+  return (
+    <section className="mx-auto max-w-[74rem] px-6 py-32 md:px-10 md:py-44">
+      <Reveal>
+        <h2 className="max-w-2xl text-balance-tight text-4xl font-medium leading-[1.06] md:text-5xl">
+          Built like an instrument. Used like a group chat.
+        </h2>
+      </Reveal>
+      <div className="mt-20 grid gap-16 md:grid-cols-3 md:gap-12">
+        {SPEC.map((p, i) => (
+          <Reveal key={p.title} delay={i * 0.07}>
+            <h3 className="text-lg font-medium tracking-[-0.02em]">
+              {p.title}
+            </h3>
+            <p className="mt-4 max-w-sm text-[15px] leading-[1.8] text-muted-foreground">
+              {p.body}
+            </p>
+          </Reveal>
+        ))}
       </div>
     </section>
   );
@@ -422,10 +327,10 @@ function LiveCanvas() {
 
 function Closer() {
   return (
-    <section className="mt-40 border-t border-border md:mt-56">
-      <div className="mx-auto max-w-[78rem] px-6 py-32 md:px-10 md:py-44">
+    <section>
+      <div className="mx-auto max-w-[74rem] px-6 py-36 text-center md:px-10 md:py-48">
         <Reveal>
-          <h2 className="max-w-4xl text-balance-tight text-[11vw] font-semibold leading-[0.92] md:text-[5.5rem]">
+          <h2 className="mx-auto max-w-3xl text-balance-tight text-[12vw] font-medium leading-[0.92] md:text-[5rem]">
             Go make something unserious.
           </h2>
         </Reveal>
@@ -434,18 +339,18 @@ function Closer() {
             to="/studio"
             className="group mt-14 inline-flex h-14 items-center gap-2 rounded-full bg-foreground pl-7 pr-6 text-[15px] font-medium text-background transition-transform duration-300 hover:-translate-y-0.5"
           >
-            Start a meme
+            Open the studio
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </Reveal>
       </div>
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-[78rem] flex-col gap-4 px-6 py-8 md:flex-row md:items-center md:justify-between md:px-10">
+      <footer>
+        <div className="mx-auto flex max-w-[74rem] flex-col gap-4 px-6 pb-12 md:flex-row md:items-center md:justify-between md:px-10">
           <div className="flex items-center gap-2.5">
             <img src="/logo.png" alt="memm" className="size-6 rounded-md" />
-            <Label className="text-foreground">memm</Label>
+            <Label className="text-foreground">memm — engineering memes</Label>
           </div>
-          <Label>Dopamine engineering — est. today</Label>
+          <Label>No account. No watermark.</Label>
         </div>
       </footer>
     </section>
@@ -456,9 +361,9 @@ function Home() {
   return (
     <div className="overflow-x-clip">
       <Hero />
-      <Ribbon />
-      <Pillars />
       <LiveCanvas />
+      <Ribbon />
+      <Spec />
       <Closer />
     </div>
   );
