@@ -53,9 +53,31 @@ function Studio() {
   const [mobilePanel, setMobilePanel] = useState<"templates" | "text" | null>(null);
 
   const boxRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [stage, setStage] = useState({ w: 0, h: 0 });
 
   const ratio = source ? source.width / source.height : 1;
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const r = entry!.contentRect;
+      setStage({ w: r.width, h: r.height });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Largest box that fits the stage while keeping the source aspect ratio.
+  const fit = (() => {
+    const maxW = Math.min(stage.w, 720);
+    const maxH = stage.h;
+    if (!maxW || !maxH) return { width: "100%", height: "auto" as const };
+    const w = Math.min(maxW, maxH * ratio);
+    return { width: `${w}px`, height: `${w / ratio}px` };
+  })();
 
   const update = useCallback((id: string, patch: Partial<TextLayer>) => {
     setLayers((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
@@ -376,15 +398,19 @@ function Studio() {
             const f = e.dataTransfer.files?.[0];
             if (f) handleFile(f);
           }}
-          className="relative flex min-w-0 flex-1 items-center justify-center overflow-auto bg-surface p-6 md:p-12"
+          className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden bg-surface p-6 md:p-12"
         >
+          <div
+            ref={stageRef}
+            className="flex size-full min-h-0 min-w-0 items-center justify-center"
+          >
           <div
             ref={boxRef}
             onPointerDown={(e) => {
               if (e.target === e.currentTarget) setSelectedId(null);
             }}
-            className="relative max-h-full w-full max-w-[720px] overflow-hidden rounded-xl bg-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.45)]"
-            style={{ aspectRatio: ratio }}
+            className="relative max-h-full max-w-full overflow-hidden rounded-xl bg-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.45)]"
+            style={{ width: fit.width, height: fit.height }}
           >
             {source ? (
               <img
@@ -433,6 +459,7 @@ function Studio() {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
           </div>
         </section>
 
