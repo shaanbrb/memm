@@ -398,15 +398,19 @@ function Studio() {
             const f = e.dataTransfer.files?.[0];
             if (f) handleFile(f);
           }}
-          className="relative flex min-w-0 flex-1 items-center justify-center overflow-auto bg-surface p-6 md:p-12"
+          className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden bg-surface p-6 md:p-12"
         >
+          <div
+            ref={stageRef}
+            className="flex size-full min-h-0 min-w-0 items-center justify-center"
+          >
           <div
             ref={boxRef}
             onPointerDown={(e) => {
               if (e.target === e.currentTarget) setSelectedId(null);
             }}
-            className="relative max-h-full w-full max-w-[720px] overflow-hidden rounded-xl bg-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.45)]"
-            style={{ aspectRatio: ratio }}
+            className="relative max-h-full max-w-full overflow-hidden rounded-xl bg-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.45)]"
+            style={{ width: fit.width, height: fit.height }}
           >
             {source ? (
               <img
