@@ -50,12 +50,12 @@ export function FloatingNav() {
     <motion.header
       animate={{ y: hidden ? -110 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 32 }}
-      className="fixed inset-x-0 top-4 z-50 flex justify-center px-4"
+      className="fixed inset-x-0 top-0 z-50 px-6 py-4 md:px-10"
     >
-      <nav className="flex w-full max-w-3xl items-center justify-between gap-4 rounded-full border border-border/70 bg-background/70 py-2 pl-3 pr-2 backdrop-blur-xl">
+      <nav className="mx-auto flex w-full max-w-[74rem] items-center justify-between gap-4">
         <Link
           to="/"
-          className="flex items-center gap-2.5 rounded-full pr-2"
+          className="flex items-center gap-2.5"
           aria-label="memm home"
         >
           <img
@@ -65,13 +65,9 @@ export function FloatingNav() {
             height={28}
             className="size-7 rounded-lg"
           />
-          <span
-            className="text-[15px] font-medium tracking-[0.06em]"
-            style={{ fontVariantCaps: "all-small-caps" }}
-          >
+          <span className="text-[15px] font-medium lowercase tracking-[0.01em]">
             memm — engineering memes
           </span>
-
         </Link>
         <ThemeToggle />
       </nav>
