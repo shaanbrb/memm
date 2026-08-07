@@ -305,7 +305,7 @@ function Spec() {
     <section className="mx-auto max-w-[74rem] px-6 py-32 md:px-10 md:py-44">
       <Reveal>
         <h2 className="max-w-2xl text-balance-tight text-4xl font-medium lowercase leading-[1.06] md:text-5xl">
-          what memm actually does.
+          why people keep using memm.
         </h2>
       </Reveal>
       <div className="mt-20 grid gap-16 md:grid-cols-3 md:gap-12">
