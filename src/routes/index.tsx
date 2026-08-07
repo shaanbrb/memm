@@ -287,16 +287,16 @@ function Ribbon() {
 
 const SPEC = [
   {
-    title: "100 templates, hand-checked",
-    body: "every template was opened, checked for resolution and cropping, and tagged. search filters them as you type, and the ones you star stay at the top.",
+    title: "no junk templates.",
+    body: "every template is hand-picked, tagged, and checked so you're not scrolling through endless low-quality memes to find the one you wanted.",
   },
   {
-    title: "typography controls on the canvas",
-    body: "set weight, size, stroke width, shadow and alignment per text block. drag a caption anywhere on the image and it lands where you drop it.",
+    title: "your captions, your layout.",
+    body: "move text anywhere. change the weight, stroke, shadow, alignment, and make every meme feel like it was made for the joke.  ",
   },
   {
-    title: "exports at the template's own resolution",
-    body: "download writes a png at the source image's native pixel size. no watermark, no account, no sign-in step.",
+    title: "download and disappear.",
+    body: "no accounts. no watermarks. just the image you came for.  ",
   },
 ];
 
