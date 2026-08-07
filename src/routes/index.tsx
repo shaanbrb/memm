@@ -169,13 +169,11 @@ function LiveCanvas() {
     >
       <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-balance-tight text-4xl font-medium lowercase leading-[1.05] md:text-6xl">
-          type in the boxes. the caption redraws on the image.
+          make the kind of meme people save instead of scroll past.
         </h2>
-        <p className="mx-auto mt-6 max-w-lg text-[15px] lowercase leading-[1.8] text-muted-foreground">
-          this is the {t.name.toLowerCase()} template at {t.width}×{t.height},
-          drawn by the same code that writes your download. edit the top or
-          bottom line and it lands on the image as you type.
-        </p>
+        <p className="mx-auto mt-6 max-w-lg text-[15px] lowercase leading-[1.8] text-muted">
+  all that's left is finding the right image, writing the caption, and sending it before someone else thinks of it.
+</p>
       </Reveal>
 
       <Reveal delay={0.08} className="mt-16 flex justify-center">
