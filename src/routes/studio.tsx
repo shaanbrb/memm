@@ -460,6 +460,7 @@ function Studio() {
               )}
             </AnimatePresence>
           </div>
+          </div>
         </section>
 
         <aside className="hidden w-[300px] shrink-0 border-l border-border lg:block">
