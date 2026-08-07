@@ -40,8 +40,9 @@ export function FloatingNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useMotionValueEvent(scrollY, "change", (y) => {
-    // once past the hero, hide it permanently — never re-show on scroll up
-    if (y > 120) setHidden(true);
+    // visible only while inside the hero (near the top),
+    // hidden once you've scrolled past it — regardless of direction
+    setHidden(y > 120);
   });
 
   if (pathname.startsWith("/studio")) return null;
