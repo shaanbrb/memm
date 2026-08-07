@@ -180,13 +180,12 @@ function LiveCanvas() {
 
       <Reveal delay={0.08} className="mt-16 flex justify-center">
         <div
-          className="relative w-full max-w-2xl overflow-hidden rounded-2xl bg-surface-2"
-          style={{
-            containerType: "inline-size",
-            aspectRatio: `${t.width} / ${t.height}`,
-            maxHeight: "62svh",
-          }}
-        >
+  className="relative w-full max-w-2xl overflow-hidden rounded-2xl bg-surface-2"
+  style={{
+    containerType: "inline-size",
+    aspectRatio: `${t.width} / ${t.height}`,
+  }}
+>
           <img
             src={proxied(t.url)}
             alt={t.name}
