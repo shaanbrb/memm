@@ -113,15 +113,7 @@ function Hero() {
         style={{ opacity: fade }}
         className="mx-auto w-full max-w-[74rem] px-6 pb-24 pt-44 md:px-10 md:pt-48"
       >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease, delay: 0.1 }}
-        >
-          <Label>memm — meme apparatus</Label>
-        </motion.div>
-
-        <h1 className="mt-12 text-[15vw] font-medium leading-[0.85] tracking-[-0.055em] sm:text-[12vw] lg:text-[9.5rem]">
+        <h1 className="text-[15vw] font-medium lowercase leading-[0.85] tracking-[-0.055em] sm:text-[12vw] lg:text-[9.5rem]">
           <motion.span
             initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
@@ -146,15 +138,15 @@ function Hero() {
           transition={{ duration: 1, ease, delay: 0.34 }}
           className="mt-16 flex flex-col gap-10 md:flex-row md:items-end md:justify-between"
         >
-          <p className="max-w-md font-mono text-[11px] uppercase leading-[2.2] tracking-[0.22em] text-muted-foreground">
-            A precise instrument for unserious output. Curated templates, a real
-            canvas, exports at source resolution.
+          <p className="max-w-md text-[15px] lowercase leading-[1.8] text-muted-foreground">
+            pick one of {templates.length} templates, type your caption,
+            download the png.
           </p>
           <Link
             to="/studio"
-            className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium text-background transition-transform duration-300 ease-out hover:-translate-y-0.5"
+            className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-foreground pl-6 pr-5 text-sm font-medium lowercase text-background transition-transform duration-300 ease-out hover:-translate-y-0.5"
           >
-            Open the studio
+            start a meme
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.div>
